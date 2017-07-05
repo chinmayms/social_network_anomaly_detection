@@ -77,25 +77,25 @@ Implemented as a part of coding challenge for Insight Data Engineering Fellowshi
 
 ### Python packages used:
 
-json
-dateutil
-collections
-sys
-os
-random
-numpy
-pytest (for writing unit test cases)
+    json
+    dateutil
+    collections
+    sys
+    os
+    random
+    numpy
+    pytest (for writing unit test cases)
 
 ### External packages
 
-numpy
-pytest
+    numpy
+    pytest
 
 ### Install instructions for packages
 
-pip install packagename
+    pip install packagename
 
-eg: pip install numpy
+    eg: pip install numpy
 
 # Tests
 
