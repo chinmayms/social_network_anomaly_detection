@@ -31,9 +31,13 @@ Unit Tests reside in
 
     'src/tests/unit_tests.py'.
 
-The engine execution is made using the python file 'run_stream.py'
+The engine execution is made using the python file
 
-The command is also available in the 'run.sh' file.
+    'run_stream.py'
+
+The command is also available in the
+
+    'run.sh' file.
 
 ### Run File for Execution
 
