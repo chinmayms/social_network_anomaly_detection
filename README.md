@@ -23,7 +23,13 @@ Execution command is
 
     ~$ python ./src/python/run_stream.py ./log_input/batch_log.json ./log_input/stream_log.json ./log_output/flagged_purchases.json
 
-All code resides within '/src/python'. Unit Tests reside in 'src/tests/unit_tests.py'.
+All code resides within
+
+    '/src/python'.
+
+Unit Tests reside in
+
+    'src/tests/unit_tests.py'.
 
 The engine execution is made using the python file 'run_stream.py'
 
@@ -31,21 +37,33 @@ The command is also available in the 'run.sh' file.
 
 ### Run File for Execution
 
-main file: ./src/python/run_stream.py
+main file:
+
+    ./src/python/run_stream.py
 
 ### System Command Line Arguments
 
-batch log input file path: ./log_input/batch_log.json
+batch log input file path:
 
-stream log input file path: ./log_input/stream_log.json
+    ./log_input/batch_log.json
 
-flagged purchases output file path: ./log_output/flagged_purchases.json
+stream log input file path:
+
+    ./log_input/stream_log.json
+
+flagged purchases output file path:
+
+    ./log_output/flagged_purchases.json
 
 ### Working
 
-The actual logic and processing is done in '/src/python/engine.py'
+The actual logic and processing is done in
 
-The object for storing individual profile state is derived from '/src/python/user_profile.py'
+    '/src/python/engine.py'
+
+The object for storing individual profile state is derived from
+
+    '/src/python/user_profile.py'
 
 The parameters are collected from the batch_log and stream_log json files.
 
