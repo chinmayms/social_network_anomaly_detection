@@ -1,3 +1,8 @@
 # Idea folder
 .idea/
 
+# Pycache folders
+__pycache__/
+
+# Pyc Files
+*.pyc
