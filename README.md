@@ -101,13 +101,19 @@ Implemented as a part of coding challenge for Insight Data Engineering Fellowshi
 
 ### Unit Tests
 
-Unit tests present in '/src/tests/unit_tests.py'
+Unit tests present in
 
-They can be run using the command '$ py.test -q unit_tests.py'
+    '/src/tests/unit_tests.py'
+
+They can be run using the command
+
+    '$ py.test -q unit_tests.py'
 
 ### Component and Functionality Tests
 
-Custom tests added in '/insight_testsuite/tests/'
+Custom tests added in
+
+    '/insight_testsuite/tests/'
 
 # Comments
 
@@ -115,15 +121,15 @@ i) Few warnings are raised by numpy when an empty list is sent for mean and stan
 
 ii) An Edge case to take care of while evaluating:
 
-Truncating (as opposed to rounding) the mean and standard deviation values as a string to two decimal points without rounding the number is probably a bad idea.
+    Truncating (as opposed to rounding) the mean and standard deviation values as a string to two decimal points without rounding the number is probably a bad idea.
 
 Using the example in the question:
 
-Truncating eg: 3.46732 is truncated as 3.46. This is not really an optimal method.
+    Truncating eg: 3.46732 is truncated as 3.46. This is not really an optimal method.
                The only way to do this is converting it to String and slicing the values or typecasting to int and recasting to String.
                I have implemented this in my solution as the example in the question demanded this.
 
-Rounding eg: Using the round(3.46732, 2) method rounds 3.46732 as 3.47. This is the ideal method for such kind of operations.
+    Rounding eg: Using the round(3.46732, 2) method rounds 3.46732 as 3.47. This is the ideal method for such kind of operations.
 
 
 
