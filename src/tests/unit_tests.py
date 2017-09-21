@@ -1,10 +1,10 @@
-##############################################################################################################
+##########################################################################
 # Author: chinmayms
 #
 # unit_tests: Run unit tests on user_profile class methods to check whether they maintain consistent state
 #             and check whether all transactions are atomic
 #
-##############################################################################################################
+##########################################################################
 
 # Python imports
 import os
@@ -138,15 +138,3 @@ class TestSuite:
 
         # Check if output file got created
         assert os.path.isfile(output_file_path)
-
-
-
-
-
-
-
-
-
-
-
-

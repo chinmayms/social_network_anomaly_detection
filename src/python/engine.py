@@ -1,10 +1,10 @@
-##############################################################################################################
+##########################################################################
 # Author: chinmayms
 #
 # engine: The core engine which streams through all files and updates the data structures
 #         and output file to maintain data and state of the social network.
 #
-##############################################################################################################
+##########################################################################
 
 # Python imports
 import json
@@ -17,14 +17,12 @@ from src.python.user_profile import UserProfile
 
 
 def check_profile_existence(user_list, user_id):
+    """Checks if the given user_id is already part of the system.
 
-    """
-    Checks if the given user_id is already part of the system
     :param user_list: Set which contains list of user_ids which are part of the system.
     :param user_id: Data Structure (Dictionary) which stores all user data objects.
-    :return: boolean value signifying whether record for given user_id already exists in system.
 
-    """
+    :return: boolean value signifying whether record for given user_id already exists in system."""
 
     if user_id in user_list:
         return True
@@ -33,27 +31,23 @@ def check_profile_existence(user_list, user_id):
 
 
 def add_user(user_list, user_data, user_id):
+    """Adds a given user to both user_list and user_data data structure by creating a new user object.
 
-    """
-    Adds a given user to both user_list and user_data data structure by creating a new user object
-    :param user_list: Set which contains list of user_ids which are part of the system
+    :param user_list: Set which contains list of user_ids which are part of the system.
     :param user_data: Data Structure (Dictionary) which stores all user data objects.
-    :param user_id: user_id to be added
+    :param user_id: user_id to be added."""
 
-    """
     user_list.add(user_id)
     user_data[user_id] = UserProfile(user_id)
 
 
 def run_batch_log(input_file_path):
+    """Runs processing using batch_log.json file transactions to create initial social network state.
 
-    """
-    Runs processing using batch_log.json file transactions to create initial social network state.
     :param input_file_path: Input file path to read initial batch_log.json file to create initial state.
-    :return:
-    1) user_data: Dictionary which maps user_ids to their profile objects which contain profile data and state.
-    2) user_list: Set which contains all user_ids part of the system.
-    """
+
+    :return user_data: Dictionary which maps user_ids to their profile objects which contain profile data and state.
+    :return user_list: Set which contains all user_ids part of the system."""
 
     # Declare user_list and user_data data structures.
 
@@ -85,11 +79,13 @@ def run_batch_log(input_file_path):
         if event_type == 'purchase':
             user_id = int(event_details['id'])
 
-            # If user profile for given user_id already exists, add purchase to its object.
-            if check_profile_existence(user_list,user_id):
+            # If user profile for given user_id already exists, add purchase to
+            # its object.
+            if check_profile_existence(user_list, user_id):
                 user_data[user_id].add_purchase(float(event_details['amount']),
                                                 parser.parse(event_details['timestamp']))
-            # If user profile does not exist, create new user profile and add purchase to its object.
+            # If user profile does not exist, create new user profile and add
+            # purchase to its object.
             else:
                 add_user(user_list,user_data,user_id)
                 user_data[user_id].add_purchase(float(event_details['amount']),
@@ -105,11 +101,12 @@ def run_batch_log(input_file_path):
 
             # If either/one accounts do not exist, create new user profile
             if not account_1_exists:
-                add_user(user_list,user_data, user_id_1)
+                add_user(user_list, user_data, user_id_1)
             if not account_2_exists:
-                add_user(user_list,user_data, user_id_2)
+                add_user(user_list, user_data, user_id_2)
 
-            # Check if two users are already friends, if not, add them to each other's friend lists
+            # Check if two users are already friends, if not, add them to each
+            # other's friend lists
             if user_id_2 not in user_data[user_id_1].get_friend_list():
                 user_data[user_id_1].add_friend(user_id_2)
             if user_id_1 not in user_data[user_id_2].get_friend_list():
@@ -123,7 +120,8 @@ def run_batch_log(input_file_path):
 
             # Remove each other from respective friend lists
 
-            # Existence of user_id in friend_list check is done at class level implementation of remove_friend method
+            # Existence of user_id in friend_list check is done at class level
+            # implementation of remove_friend method
             user_data[user_id_1].remove_friend(user_id_2)
             user_data[user_id_2].remove_friend(user_id_1)
 
@@ -131,17 +129,15 @@ def run_batch_log(input_file_path):
 
 
 def run_stream_log(stream_log_file_path, output_file_path, user_data, user_list, NUMBER_OF_TRACKED_PURCHASES, DEGREE_OF_SOCIAL_NETWORK):
+    """Run stream processing using stream_log.json file transactions to determine flagged purchases.
 
-    """
-    Run stream processing using stream_log.json file transactions to determine flagged purchases.
-    :param stream_log_file_path: file_path to read stream_log.json
-    :param output_file_path: path to write flagged_purchases.json
+    :param stream_log_file_path: file_path to read stream_log.json.
+    :param output_file_path: path to write flagged_purchases.json.
     :param user_data: Dictionary which maps user_ids to their profile objects which contain profile data and state.
     :param user_list: Set which contains all user_ids part of the system.
     :param NUMBER_OF_TRACKED_PURCHASES: Threshold for previous transaction consideration.
-    :param DEGREE_OF_SOCIAL_NETWORK: Degree of social network to consider while flagging purchases.
+    :param DEGREE_OF_SOCIAL_NETWORK: Degree of social network to consider while flagging purchases."""
 
-    """
     # Read stream_log.json file
     try:
         stream_file = open(stream_log_file_path, 'r')
@@ -165,12 +161,14 @@ def run_stream_log(stream_log_file_path, output_file_path, user_data, user_list,
         if event_details['event_type'] == 'purchase':
             user_id = int(event_details['id'])
 
-            # If user profile for given user_id already exists, add purchase to its object.
-            if check_profile_existence(user_list,user_id):
+            # If user profile for given user_id already exists, add purchase to
+            # its object.
+            if check_profile_existence(user_list, user_id):
                 user_data[user_id].add_purchase(float(event_details['amount']),
                                                 parser.parse(event_details['timestamp']))
 
-            # If user profile does not exist, create new user profile and add purchase to its object.
+            # If user profile does not exist, create new user profile and add
+            # purchase to its object.
             else:
                 add_user(user_list,user_data,user_id)
                 user_data[user_id].add_purchase(float(event_details['amount']),
@@ -179,14 +177,13 @@ def run_stream_log(stream_log_file_path, output_file_path, user_data, user_list,
             # Get friend list for given user_id
             friends_list = user_data[user_id].get_friend_list()
 
-            """
-            Intermediate set to nest through degree of social network.
-            We use sets to avoid duplication of friends as we iterate through a graph of friends
+            """Intermediate set to nest through degree of social network.
+            We use sets to avoid duplication of friends as we iterate through a graph of friends."""
 
-            """
             intermediate_list = set(friends_list)
 
-            # total_list will be a set which encapsulates entire network withing the given degree
+            # total_list will be a set which encapsulates entire network withing
+            # the given degree
             total_list = set()
 
             # Add friends at degree '0' (direct friends) to total_list
@@ -195,8 +192,9 @@ def run_stream_log(stream_log_file_path, output_file_path, user_data, user_list,
             # Declare initial depth to zero.
             depth = 0
 
-            # Iterate through network and add friends until given degree is attained.
-            while depth < DEGREE_OF_SOCIAL_NETWORK-1:
+            # Iterate through network and add friends until given degree is
+            # attained.
+            while depth < DEGREE_OF_SOCIAL_NETWORK - 1:
                 temp_set = set()
                 for friend in intermediate_list:
                     total_list = total_list.union(set(user_data[friend].get_friend_list()))
@@ -204,18 +202,18 @@ def run_stream_log(stream_log_file_path, output_file_path, user_data, user_list,
                 intermediate_list = temp_set
                 depth += 1
 
-            """
-            Because of the graph, it may be possible that the user_id itself might have gotten added to the list,
-            If that is the case, we remove it.
+            """Because of the graph, it may be possible that the user_id itself might have gotten added to the list, 
+            if that is the case, we remove it."""
 
-            """
             if user_id in total_list:
                 total_list.remove(user_id)
 
-            # contains last 'T' transactions from found network of degree 'D' for given purchase of the given user_id.
+            # contains last 'T' transactions from found network of degree 'D'
+            # for given purchase of the given user_id.
             total_spend = []
 
-            # Add transaction to total_spend by iterating over list of friends within degree 'D'
+            # Add transaction to total_spend by iterating over list of friends
+            # within degree 'D'
             for every_connect_friend in total_list:
                 total_spend += user_data[every_connect_friend].get_last_t_purchases(NUMBER_OF_TRACKED_PURCHASES)
 
@@ -225,10 +223,12 @@ def run_stream_log(stream_log_file_path, output_file_path, user_data, user_list,
             # Find standard deviation of all found purchases
             std = np.std(np.array(total_spend))
 
-            # Check if current purchase is at least 3 standard deviations above mean of list of purchases
+            # Check if current purchase is at least 3 standard deviations above
+            # mean of list of purchases
             if float(event_details['amount']) > mean + 3 * std:
 
-                # If purchase > mean + 3 * std, create ordered dict to preserve order of keys and add all details to it.
+                # If purchase > mean + 3 * std, create ordered dict to preserve
+                # order of keys and add all details to it.
                 flagged_details = OrderedDict()
                 flagged_details['event_type'] = event_details['event_type']
                 flagged_details['timestamp'] = event_details['timestamp']
@@ -254,7 +254,8 @@ def run_stream_log(stream_log_file_path, output_file_path, user_data, user_list,
             if not account_2_exists:
                 add_user(user_list,user_data, user_id_2)
 
-            # Check if two users are already friends, if not, add them to each other's friend lists
+            # Check if two users are already friends, if not, add them to each
+            # other's friend lists
             if user_id_2 not in user_data[user_id_1].get_friend_list():
                 user_data[user_id_1].add_friend(user_id_2)
             if user_id_1 not in user_data[user_id_2].get_friend_list():
@@ -272,19 +273,3 @@ def run_stream_log(stream_log_file_path, output_file_path, user_data, user_list,
 
     # Close file opened for writing.
     flagged_file.close()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
